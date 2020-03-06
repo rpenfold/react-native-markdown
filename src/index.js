@@ -17,7 +17,8 @@ class Markdown extends Component<Props> {
     errorHandler: () => null,
     rules: {},
     styles: initialStyles,
-    whitelist: [],
+    whitelist: [],    
+    onLinkPress: Function.prototype,
   }
 
   static propTypes = {
@@ -27,6 +28,7 @@ class Markdown extends Component<Props> {
     rules: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     styles: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     whitelist: PropTypes.arrayOf(PropTypes.string),
+    onLinkPress: PropTypes.func,
   }
 
   shouldComponentUpdate = (nextProps: Props): boolean => (
@@ -56,7 +58,7 @@ class Markdown extends Component<Props> {
         _.merge(
           {},
           SimpleMarkdown.defaultRules,
-          initialRules(mergedStyles),
+          initialRules(mergedStyles, this.props),
           this.props.rules,
         ),
       )
