@@ -2,7 +2,7 @@ import { createElement } from 'react'
 import { Image, Text, View, Linking } from 'react-native'
 import _ from 'lodash'
 
-export default styles => ({
+export default (styles, props) => ({
   autolink: {
     react: (node, output, state) => {
       state.withinText = true
@@ -137,17 +137,19 @@ export default styles => ({
   link: {
     react: (node, output, state) => {
       state.withinText = true
-      const openUrl = (url) => {
-        Linking.openURL(url).catch(error =>
-          console.warn('An error occurred: ', error),
-        )
-      }
+      const onPress = props.onLinkPress 
+        ? props.onLinkPress 
+        : (url) => Linking.openURL(url)
+          .catch(error =>
+              console.warn('An error occurred: ', error),
+          );
+      
       return createElement(
         Text,
         {
           style: node.target.match(/@/) ? styles.mailTo : styles.link,
           key: state.key,
-          onPress: () => openUrl(node.target),
+          onPress: () => onPress(node.target),
         },
         output(node.content, state),
       )
