@@ -1,12 +1,11 @@
 {
-  "name": "react-native-simple-markdown",
-  "repository": "https://github.com/CharlesMangwa/react-native-simple-markdown",
+  "name": "@lyv/react-native-markdown",
+  "repository": "https://github.com/rpenfold/react-native-markdown",
   "version": "next",
-  "description":
-    "Render Markdown in React Native with native components (iOS & Android)",
+  "description": "Render Markdown in React Native with native components (iOS & Android)",
   "main": "lib/index.js",
   "files": ["lib"],
-  "author": "Charles Mangwa <charlesmangwa@gmail.com>",
+  "author": "Ryan Penfold",
   "scripts": {
     "lint": "eslint .",
     "flow": "flow --show-all-errors",
