@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { arrayOf, func, object, string } from 'prop-types';
 import SimpleMarkdown from 'simple-markdown';
+import assign from 'lodash/assign';
 import merge from 'lodash/merge';
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
@@ -10,7 +11,6 @@ import pullAll from 'lodash/pullAll';
 import { MarkdownProps } from './types';
 import initialRules from './rules';
 import initialStyles from './styles';
-import { MarkdownStyles } from './types';
 
 class Markdown extends React.Component<MarkdownProps> {
   static defaultProps: MarkdownProps = {
@@ -42,7 +42,7 @@ class Markdown extends React.Component<MarkdownProps> {
   /** Post processes rules to strip out unwanted styling options
    *  while keeping the default 'paragraph' and 'text' rules
    */
-  _postProcessRules = (preRules: Object): Object => {
+  _postProcessRules = (preRules: object): object => {
     const { whitelist, blacklist } = this.props;
     const defaultRules = ['paragraph', 'text'];
 
@@ -57,7 +57,7 @@ class Markdown extends React.Component<MarkdownProps> {
 
   _renderContent = (children: string) => {
     try {
-      const mergedStyles = Object.assign({}, initialStyles, this.props.styles);
+      const mergedStyles = assign({}, initialStyles, this.props.styles);
       const rules = this._postProcessRules(
         merge(
           {},
@@ -87,9 +87,11 @@ class Markdown extends React.Component<MarkdownProps> {
   }
 
   render() {
+    const { children, styles } = this.props;
+
     return (
-      <View style={[initialStyles.view, this.props.styles.view]}>
-        {this._renderContent(this.props.children)}
+      <View style={[initialStyles.view, styles.view]}>
+        {this._renderContent(children)}
       </View>
     );
   }

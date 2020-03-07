@@ -1,10 +1,17 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "noImplicitAny": false,
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
         "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "jsx": "react",
+        "outDir": "dist",
+        "declaration": true,
     },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
 }
