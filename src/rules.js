@@ -1,5 +1,5 @@
-import { createElement } from 'react';
-import { Image, Text, View, Linking } from 'react-native';
+import { createElement } from 'react'
+import { Image, Text, View, Linking } from 'react-native'
 
 export default (styles, props) => ({
   autolink: {
@@ -136,13 +136,12 @@ export default (styles, props) => ({
   link: {
     react: (node, output, state) => {
       state.withinText = true
-      const onPress = props.onLinkPress 
-        ? props.onLinkPress 
-        : (url) => Linking.openURL(url)
-          .catch(error =>
-              console.warn('An error occurred: ', error),
-          );
-      
+      const onPress = props.onLinkPress
+        ? props.onLinkPress
+        : url => Linking
+          .openURL(url)
+          .catch(error => console.warn('An error occurred: ', error))
+
       return createElement(
         Text,
         {
