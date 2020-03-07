@@ -4,7 +4,10 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import PropTypes from 'prop-types'
 import SimpleMarkdown from 'simple-markdown'
-import _ from 'lodash'
+import merge from 'lodash/merge'
+import omit from 'lodash/omit'
+import pick from 'lodash/pick'
+import pullAll from 'lodash/pullAll'
 
 import type { DefaultProps, Props } from './types'
 import initialRules from './rules'
@@ -17,7 +20,7 @@ class Markdown extends Component<Props> {
     errorHandler: () => null,
     rules: {},
     styles: initialStyles,
-    whitelist: [],    
+    whitelist: [],
     onLinkPress: Function.prototype,
   }
 
@@ -25,8 +28,8 @@ class Markdown extends Component<Props> {
     blacklist: PropTypes.arrayOf(PropTypes.string),
     children: PropTypes.string,
     errorHandler: PropTypes.func,
-    rules: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    styles: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    rules: PropTypes.object,
+    styles: PropTypes.object,
     whitelist: PropTypes.arrayOf(PropTypes.string),
     onLinkPress: PropTypes.func,
   }
@@ -43,10 +46,10 @@ class Markdown extends Component<Props> {
   _postProcessRules = (preRules: Object): Object => {
     const defaultRules = ['paragraph', 'text']
     if (this.props.whitelist && this.props.whitelist.length) {
-      return _.pick(preRules, _.concat(this.props.whitelist, defaultRules))
+      return pick(preRules, [...this.props.whitelist, ...defaultRules])
     }
     else if (this.props.blacklist && this.props.blacklist.length) {
-      return _.omit(preRules, _.pullAll(this.props.blacklist, defaultRules))
+      return omit(preRules, pullAll(this.props.blacklist, defaultRules))
     }
     return preRules
   }
@@ -55,7 +58,7 @@ class Markdown extends Component<Props> {
     try {
       const mergedStyles = Object.assign({}, initialStyles, this.props.styles)
       const rules = this._postProcessRules(
-        _.merge(
+        merge(
           {},
           SimpleMarkdown.defaultRules,
           initialRules(mergedStyles, this.props),
