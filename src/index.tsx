@@ -1,6 +1,4 @@
-/* @flow */
-
-import React, { Component } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { arrayOf, func, object, string } from 'prop-types';
 import SimpleMarkdown from 'simple-markdown';
@@ -9,19 +7,20 @@ import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import pullAll from 'lodash/pullAll';
 
-import type { DefaultProps, Props } from './types';
+import { MarkdownProps } from './types';
 import initialRules from './rules';
 import initialStyles from './styles';
+import { MarkdownStyles } from './types';
 
-class Markdown extends Component<Props> {
-  static defaultProps: DefaultProps = {
+class Markdown extends React.Component<MarkdownProps> {
+  static defaultProps: MarkdownProps = {
     blacklist: [],
     children: '',
     errorHandler: () => null,
     rules: {},
     styles: initialStyles,
     whitelist: [],
-    onLinkPress: Function.prototype,
+    onLinkPress: () => {},
   }
 
   static propTypes = {
@@ -34,7 +33,7 @@ class Markdown extends Component<Props> {
     onLinkPress: func,
   }
 
-  shouldComponentUpdate = (nextProps: Props): boolean => (
+  shouldComponentUpdate = (nextProps: MarkdownProps): boolean => (
     this.props.children !== nextProps.children ||
     this.props.styles !== nextProps.styles
   )
@@ -56,7 +55,7 @@ class Markdown extends Component<Props> {
     return preRules;
   }
 
-  _renderContent = (children: string): ?React$Element<any> => {
+  _renderContent = (children: string) => {
     try {
       const mergedStyles = Object.assign({}, initialStyles, this.props.styles);
       const rules = this._postProcessRules(
@@ -70,11 +69,11 @@ class Markdown extends Component<Props> {
       const child = Array.isArray(this.props.children)
         ? this.props.children.join('')
         : this.props.children;
-      // @TODO: Add another \n?
       const blockSource = `${child}\n`;
       const tree = SimpleMarkdown.parserFor(rules)(blockSource, {
         inline: false,
       });
+
       return SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, 'react'))(
         tree,
       );

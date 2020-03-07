@@ -28,6 +28,6 @@
     "no-param-reassign": 0,
     "no-unused-expressions": 0,
     "react/jsx-filename-extension": 0,
-    "react/sort-comp": 0,
+    "react/sort-comp": 0
   }
 }

@@ -49,6 +49,9 @@
     "parser"
   ],
   "devDependencies": {
+    "@types/lodash": "4.14.149",
+    "@types/react": "16.9.23",
+    "@types/react-native": "0.61.20",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
@@ -68,6 +71,7 @@
     "flow-copy-source": "^1.2.1",
     "husky": "^0.14.3",
     "pretty-quick": "^1.2.2",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "typescript": "3.8.3"
   }
 }

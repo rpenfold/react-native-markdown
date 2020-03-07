@@ -4,7 +4,7 @@ const styles = {
   },
   blockQuoteSectionBar: {
     width: 3,
-    height: null,
+    height: 0,
     backgroundColor: '#DDDDDD',
     marginRight: 15,
   },
