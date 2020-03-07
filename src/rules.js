@@ -1,6 +1,5 @@
-import { createElement } from 'react'
-import { Image, Text, View, Linking } from 'react-native'
-import _ from 'lodash'
+import { createElement } from 'react';
+import { Image, Text, View, Linking } from 'react-native';
 
 export default (styles, props) => ({
   autolink: {
@@ -11,7 +10,7 @@ export default (styles, props) => ({
         {
           key: state.key,
           style: styles.link,
-          onPress: _.noop,
+          onPress: Function.prototype,
         },
         output(node.content, state),
       )
@@ -157,7 +156,7 @@ export default (styles, props) => ({
   },
   list: {
     react: (node, output, state) => {
-      const items = _.map(node.items, (item, i) => {
+      const items = node.items.map((item, i) => {
         let bullet
         if (node.ordered) {
           bullet = createElement(
@@ -229,7 +228,7 @@ export default (styles, props) => ({
   },
   table: {
     react: (node, output, state) => {
-      const headers = _.map(node.header, (content, i) =>
+      const headers = node.header.map((content, i) =>
         createElement(
           Text,
           {
@@ -242,8 +241,8 @@ export default (styles, props) => ({
 
       const header = createElement(View, { style: styles.tableHeader }, headers)
 
-      const rows = _.map(node.cells, (row, r) => {
-        const cells = _.map(row, (content, c) =>
+      const rows = node.cells.map((row, r) => {
+        const cells = row.map((content, c) =>
           createElement(
             View,
             {
@@ -269,7 +268,7 @@ export default (styles, props) => ({
       const state = { ...parentState }
       // Breaking words up in order to allow for text reflowing in flexbox
       let words = node.content.split(' ')
-      words = _.map(words, (word, i) => {
+      words = words.map((word, i) => {
         i !== words.length - 1 ? (word = `${word} `) : null
         const textStyles = [styles.text]
         !state.withinText ? textStyles.push(styles.plainText) : null

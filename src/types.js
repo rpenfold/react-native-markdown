@@ -7,6 +7,7 @@ export type Props = {
   rules: Object,
   styles: Object,
   whitelist: Array<any>,
+  onLinkPress: Function,
 }
 
 export type DefaultProps = Props & {
