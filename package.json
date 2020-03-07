@@ -14,7 +14,8 @@
     "parser"
   ],
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "tsc"
   },
   "dependencies": {
     "@babel/preset-env": "7.8.7",
