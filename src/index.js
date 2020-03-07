@@ -1,17 +1,17 @@
 /* @flow */
 
-import React, { Component } from 'react'
-import { View } from 'react-native'
-import PropTypes from 'prop-types'
-import SimpleMarkdown from 'simple-markdown'
-import merge from 'lodash/merge'
-import omit from 'lodash/omit'
-import pick from 'lodash/pick'
-import pullAll from 'lodash/pullAll'
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { arrayOf, func, object, string } from 'prop-types';
+import SimpleMarkdown from 'simple-markdown';
+import merge from 'lodash/merge';
+import omit from 'lodash/omit';
+import pick from 'lodash/pick';
+import pullAll from 'lodash/pullAll';
 
-import type { DefaultProps, Props } from './types'
-import initialRules from './rules'
-import initialStyles from './styles'
+import type { DefaultProps, Props } from './types';
+import initialRules from './rules';
+import initialStyles from './styles';
 
 class Markdown extends Component<Props> {
   static defaultProps: DefaultProps = {
@@ -25,13 +25,13 @@ class Markdown extends Component<Props> {
   }
 
   static propTypes = {
-    blacklist: PropTypes.arrayOf(PropTypes.string),
-    children: PropTypes.string,
-    errorHandler: PropTypes.func,
-    rules: PropTypes.object,
-    styles: PropTypes.object,
-    whitelist: PropTypes.arrayOf(PropTypes.string),
-    onLinkPress: PropTypes.func,
+    blacklist: arrayOf(string),
+    children: string,
+    errorHandler: func,
+    rules: object,
+    styles: object,
+    whitelist: arrayOf(string),
+    onLinkPress: func,
   }
 
   shouldComponentUpdate = (nextProps: Props): boolean => (
@@ -44,19 +44,21 @@ class Markdown extends Component<Props> {
    *  while keeping the default 'paragraph' and 'text' rules
    */
   _postProcessRules = (preRules: Object): Object => {
-    const defaultRules = ['paragraph', 'text']
-    if (this.props.whitelist && this.props.whitelist.length) {
-      return pick(preRules, [...this.props.whitelist, ...defaultRules])
+    const { whitelist, blacklist } = this.props;
+    const defaultRules = ['paragraph', 'text'];
+
+    if (whitelist && whitelist.length) {
+      return pick(preRules, [...whitelist, ...defaultRules]);
     }
-    else if (this.props.blacklist && this.props.blacklist.length) {
-      return omit(preRules, pullAll(this.props.blacklist, defaultRules))
+    else if (blacklist && blacklist.length) {
+      return omit(preRules, pullAll(blacklist, defaultRules));
     }
-    return preRules
+    return preRules;
   }
 
   _renderContent = (children: string): ?React$Element<any> => {
     try {
-      const mergedStyles = Object.assign({}, initialStyles, this.props.styles)
+      const mergedStyles = Object.assign({}, initialStyles, this.props.styles);
       const rules = this._postProcessRules(
         merge(
           {},
@@ -64,25 +66,25 @@ class Markdown extends Component<Props> {
           initialRules(mergedStyles, this.props),
           this.props.rules,
         ),
-      )
+      );
       const child = Array.isArray(this.props.children)
         ? this.props.children.join('')
-        : this.props.children
+        : this.props.children;
       // @TODO: Add another \n?
-      const blockSource = `${child}\n`
+      const blockSource = `${child}\n`;
       const tree = SimpleMarkdown.parserFor(rules)(blockSource, {
         inline: false,
-      })
+      });
       return SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, 'react'))(
         tree,
-      )
+      );
     }
     catch (errors) {
       this.props.errorHandler
         ? this.props.errorHandler(errors, children)
-        : console.error(errors)
+        : console.error(errors);
     }
-    return null
+    return null;
   }
 
   render() {
@@ -90,8 +92,8 @@ class Markdown extends Component<Props> {
       <View style={[initialStyles.view, this.props.styles.view]}>
         {this._renderContent(this.props.children)}
       </View>
-    )
+    );
   }
 }
 
-export default Markdown
+export default Markdown;

@@ -1,6 +1,4 @@
-/* @flow */
-
-const styles: Object = {
+const styles = {
   blockQuoteSection: {
     flexDirection: 'row',
   },
@@ -127,6 +125,6 @@ const styles: Object = {
     minWidth: 1,
     minHeight: 1,
   },
-}
+};
 
-export default styles
+export default styles;

@@ -29,6 +29,5 @@
     "no-unused-expressions": 0,
     "react/jsx-filename-extension": 0,
     "react/sort-comp": 0,
-    "semi": [2, "never"]
   }
 }

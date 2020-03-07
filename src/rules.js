@@ -1,10 +1,10 @@
-import { createElement } from 'react'
-import { Image, Text, View, Linking } from 'react-native'
+import { createElement } from 'react';
+import { Image, Text, View, Linking } from 'react-native';
 
 export default (styles, props) => ({
   autolink: {
     react: (node, output, state) => {
-      state.withinText = true
+      state.withinText = true;
       return createElement(
         Text,
         {
@@ -13,16 +13,16 @@ export default (styles, props) => ({
           onPress: Function.prototype,
         },
         output(node.content, state),
-      )
+      );
     },
   },
   blockQuote: {
     react: (node, output, state) => {
-      state.withinText = true
+      state.withinText = true;
       const blockBar = createElement(View, {
         key: state.key,
         style: [styles.blockQuoteSectionBar, styles.blockQuoteBar],
-      })
+      });
       const blockText = createElement(
         Text,
         {
@@ -30,7 +30,7 @@ export default (styles, props) => ({
           style: styles.blockQuoteText,
         },
         output(node.content, state),
-      )
+      );
       return createElement(
         View,
         {
@@ -38,7 +38,7 @@ export default (styles, props) => ({
           style: [styles.blockQuoteSection, styles.blockQuote],
         },
         [blockBar, blockText],
-      )
+      );
     },
   },
   br: {
@@ -54,7 +54,7 @@ export default (styles, props) => ({
   },
   codeBlock: {
     react: (node, output, state) => {
-      state.withinText = true
+      state.withinText = true;
       return createElement(
         Text,
         {
@@ -62,12 +62,12 @@ export default (styles, props) => ({
           style: styles.codeBlock,
         },
         null,
-      )
+      );
     },
   },
   del: {
     react: (node, output, state) => {
-      state.withinText = true
+      state.withinText = true;
       return createElement(
         Text,
         {
@@ -75,12 +75,12 @@ export default (styles, props) => ({
           style: styles.del,
         },
         output(node.content, state),
-      )
+      );
     },
   },
   em: {
     react: (node, output, state) => {
-      state.withinText = true
+      state.withinText = true;
       return createElement(
         Text,
         {
@@ -88,15 +88,15 @@ export default (styles, props) => ({
           style: styles.em,
         },
         output(node.content, state),
-      )
+      );
     },
   },
   heading: {
     react: (node, output, parentState) => {
-      const state = { ...parentState }
-      state.withinText = true
-      const stylesToApply = [styles.heading, styles[`heading ${node.level}`]]
-      state.stylesToApply = stylesToApply
+      const state = { ...parentState };
+      state.withinText = true;
+      const stylesToApply = [styles.heading, styles[`heading ${node.level}`]];
+      state.stylesToApply = stylesToApply;
       return createElement(
         Text,
         {
@@ -104,7 +104,7 @@ export default (styles, props) => ({
           style: stylesToApply,
         },
         output(node.content, state),
-      )
+      );
     },
   },
   hr: {
@@ -122,7 +122,7 @@ export default (styles, props) => ({
   },
   inlineCode: {
     react: (node, output, state) => {
-      state.withinText = true
+      state.withinText = true;
       return createElement(
         Text,
         {
@@ -130,17 +130,17 @@ export default (styles, props) => ({
           style: styles.inlineCode,
         },
         node.content,
-      )
+      );
     },
   },
   link: {
     react: (node, output, state) => {
-      state.withinText = true
+      state.withinText = true;
       const onPress = props.onLinkPress
         ? props.onLinkPress
         : url => Linking
           .openURL(url)
-          .catch(error => console.warn('An error occurred: ', error))
+          .catch(error => console.warn('An error occurred: ', error));
 
       return createElement(
         Text,
@@ -150,19 +150,19 @@ export default (styles, props) => ({
           onPress: () => onPress(node.target),
         },
         output(node.content, state),
-      )
+      );
     },
   },
   list: {
     react: (node, output, state) => {
       const items = node.items.map((item, i) => {
-        let bullet
+        let bullet;
         if (node.ordered) {
           bullet = createElement(
             Text,
             { key: state.key, style: styles.listItemNumber },
             `${i + 1} . `,
-          )
+          );
         }
         else {
           bullet = createElement(
@@ -171,13 +171,13 @@ export default (styles, props) => ({
             styles.listItemBulletType
               ? `${styles.listItemBulletType} `
               : '\u2022 ',
-          )
+          );
         }
         const listItemText = createElement(
           Text,
           { key: state.key + 1, style: styles.listItemText },
           output(item, state),
-        )
+        );
         return createElement(
           View,
           {
@@ -185,9 +185,9 @@ export default (styles, props) => ({
             style: styles.listItem,
           },
           [bullet, listItemText],
-        )
-      })
-      return createElement(View, { key: state.key, style: styles.list }, items)
+        );
+      });
+      return createElement(View, { key: state.key, style: styles.list }, items);
     },
   },
   newline: {
@@ -214,7 +214,7 @@ export default (styles, props) => ({
   },
   strong: {
     react: (node, output, state) => {
-      state.withinText = true
+      state.withinText = true;
       return createElement(
         Text,
         {
@@ -222,7 +222,7 @@ export default (styles, props) => ({
           style: styles.strong,
         },
         output(node.content, state),
-      )
+      );
     },
   },
   table: {
@@ -236,9 +236,9 @@ export default (styles, props) => ({
           },
           output(content, state),
         ),
-      )
+      );
 
-      const header = createElement(View, { style: styles.tableHeader }, headers)
+      const header = createElement(View, { style: styles.tableHeader }, headers);
 
       const rows = node.cells.map((row, r) => {
         const cells = row.map((content, c) =>
@@ -250,28 +250,28 @@ export default (styles, props) => ({
             },
             output(content, state),
           ),
-        )
-        const rowStyles = [styles.tableRow]
-        node.cells.length - 1 === r ? rowStyles.push(styles.tableRowLast) : null
-        return createElement(View, { key: r, style: rowStyles }, cells)
-      })
+        );
+        const rowStyles = [styles.tableRow];
+        node.cells.length - 1 === r ? rowStyles.push(styles.tableRowLast) : null;
+        return createElement(View, { key: r, style: rowStyles }, cells);
+      });
 
       return createElement(View, { key: state.key, style: styles.table }, [
         header,
         rows,
-      ])
+      ]);
     },
   },
   text: {
     react: (node, output, parentState) => {
-      const state = { ...parentState }
+      const state = { ...parentState };
       // Breaking words up in order to allow for text reflowing in flexbox
-      let words = node.content.split(' ')
+      let words = node.content.split(' ');
       words = words.map((word, i) => {
-        i !== words.length - 1 ? (word = `${word} `) : null
-        const textStyles = [styles.text]
-        !state.withinText ? textStyles.push(styles.plainText) : null
-        state.stylesToApply ? textStyles.push(state.stylesToApply) : null
+        i !== words.length - 1 ? (word = `${word} `) : null;
+        const textStyles = [styles.text];
+        !state.withinText ? textStyles.push(styles.plainText) : null;
+        state.stylesToApply ? textStyles.push(state.stylesToApply) : null;
         return createElement(
           Text,
           {
@@ -279,14 +279,14 @@ export default (styles, props) => ({
             style: textStyles,
           },
           word,
-        )
-      })
-      return words
+        );
+      });
+      return words;
     },
   },
   u: {
     react: (node, output, state) => {
-      state.withinText = true
+      state.withinText = true;
       return createElement(
         Text,
         {
@@ -294,17 +294,17 @@ export default (styles, props) => ({
           style: styles.u,
         },
         output(node.content, state),
-      )
+      );
     },
   },
   url: {
     react: (node, output, state) => {
-      state.withinText = true
+      state.withinText = true;
       const openURL = (url) => {
         Linking.openURL(url).catch(error =>
           console.warn('An error occurred: ', error),
-        )
-      }
+        );
+      };
       return createElement(
         Text,
         {
@@ -313,7 +313,7 @@ export default (styles, props) => ({
           onPress: openURL(node.target),
         },
         output(node.content, state),
-      )
+      );
     },
   },
-})
+});
